@@ -89,25 +89,28 @@ def main():
     # get location
     g = geocoder.ip('me')  # returns [##.####, ##.####]
     [lat, lng] = g.latlng
-    location = g.city + ', ' + g.state
+    # location = g.city + ', ' + g.state
 
     # get weather from OpenWeatherMap API
-    url = 'https://api.openweathermap.org/data/2.5/weather?lat={}&lon={}&APPID={}'.format(
-        lat, lng, secrets.ow_api_key)
+    url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lng}&APPID={secrets.ow_api_key}'
     print(url)
     urldata = urllib.request.urlopen(url)
     with urllib.request.urlopen(url) as url:
         data = json.loads(url.read().decode('utf-8'))
     urldata.close()
     temp = ktof(data['main']['temp'])
-    low = ktof(data['main']['temp_min'])
+    # low = ktof(data['main']['temp_min'])
     temp = ktof(data['main']['temp_max'])
-    windir = dtocard(data['wind']['deg'])
+    windir = ''
+    try:
+        dtocard(data['wind']['deg'])
+    except KeyError:
+        pass
     windspeed = data['wind']['speed']
     wind = beaufort(windspeed) + ' ' + windir
+    description = data['weather'][0]['main']
 
-    print('{}\u00b0F'.format(temp))
-    print(wind)
+    print('{}\u00b0F, {}, {}'.format(temp, description, wind))
     pass
 
 

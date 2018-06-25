@@ -93,7 +93,6 @@ def main():
 
     # get weather from OpenWeatherMap API
     url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lng}&APPID={secrets.ow_api_key}'
-    print(url)
     urldata = urllib.request.urlopen(url)
     with urllib.request.urlopen(url) as url:
         data = json.loads(url.read().decode('utf-8'))

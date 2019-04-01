@@ -5,7 +5,23 @@ import json
 import urllib
 import sys
 import geocoder
-import secrets
+import os
+
+home = os.path.expanduser("~")
+data_dir = os.path.join(home, '.local/share/pyweather-lmr')
+config = os.path.join(data_dir, "config.json")
+
+os.makedirs(os.path.dirname(config), exist_ok=True)
+try:
+    with open(config, 'r') as f:
+        api_key = json.load(f)["api_key"]
+except FileNotFoundError:
+    api_key = input("Enter Open Weather API Key: ")
+    data = {
+        "api_key": api_key
+    }
+    with open(config, 'w') as f:
+        json.dump(data, f)
 
 
 def ktof(k):
@@ -92,7 +108,7 @@ def main():
     # location = g.city + ', ' + g.state
 
     # get weather from OpenWeatherMap API
-    url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lng}&APPID={secrets.ow_api_key}'
+    url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lng}&APPID={api_key}'
     urldata = urllib.request.urlopen(url)
     with urllib.request.urlopen(url) as url:
         data = json.loads(url.read().decode('utf-8'))

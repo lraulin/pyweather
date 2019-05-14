@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='pyweather',
-    version='0.0.3',
+    version='0.0.4',
     entry_points={
         'console_scripts': ['pyweather=pyweather.main:main'],
     },

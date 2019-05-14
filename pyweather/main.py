@@ -7,9 +7,14 @@ import sys
 import geocoder
 import os
 
+# 5006 Valley Drive
+DEFAULT_LATLNG = [38.630130, -76.516820]
+
 home = os.path.expanduser("~")
 data_dir = os.path.join(home, '.local/share/pyweather-lmr')
 config = os.path.join(data_dir, "config.json")
+
+print("Pyweather LMR")
 
 os.makedirs(os.path.dirname(config), exist_ok=True)
 try:
@@ -103,9 +108,12 @@ def beaufort(n):
 
 def main():
     # get location
-    g = geocoder.ip('me')  # returns [##.####, ##.####]
-    [lat, lng] = g.latlng
-    # location = g.city + ', ' + g.state
+    try:
+        g = geocoder.ip('me')  # returns [##.####, ##.####]
+        [lat, lng] = g.latlng
+        # location = g.city + ', ' + g.state
+    except TypeError:
+        [lat, lng] = DEFAULT_LATLNG
 
     # get weather from OpenWeatherMap API
     url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lng}&APPID={api_key}'

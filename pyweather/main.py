@@ -118,10 +118,8 @@ def main():
     # get weather from OpenWeatherMap API
     try:
         url = f'https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lng}&APPID={api_key}'
-        urldata = urllib.request.urlopen(url)
         with urllib.request.urlopen(url) as url:
             data = json.loads(url.read().decode('utf-8'))
-        urldata.close()
         temp = ktof(data['main']['temp'])
         # low = ktof(data['main']['temp_min'])
         temp = ktof(data['main']['temp_max'])
@@ -136,7 +134,6 @@ def main():
         print('{}\u00b0F, {}, {}'.format(temp, description, wind))
     except urllib.error.HTTPError:
         print('Unable to contact OpenWeather')
-
 
 
 if __name__ == '__main__':
